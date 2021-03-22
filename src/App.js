@@ -5,7 +5,6 @@ import awsExports from "./aws-exports";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
 Amplify.configure(awsExports);
-const bucket_name = awsExports.aws_user_files_s3_bucket;
 
 const AWS = require("aws-sdk");
 AWS.config.region = awsExports.aws_cognito_region;
@@ -19,11 +18,10 @@ function App() {
   const [imageFile, setImageFile] = useState(null);
 
   const uploadImage = async () => {
-    Storage.put(imageFile.name, imageFile)
-      .then((result) => {
-        checkImage(imageFile.name);
-      })
-      .catch((error) => console.log(error));
+    checkForModeration(imageFile)
+      .then((file) => Storage.put(file.name, file))
+      .then(() => alert("Successfully uploaded image to S3!"))
+      .catch((error) => alert(error));
   };
 
   return (
@@ -33,20 +31,18 @@ function App() {
           <PhotoPicker preview onPick={(image) => setImageFile(image.file)} />
         </center>
         <center>
-          <button onClick={uploadImage}>Upload file</button>
+          <button onClick={uploadImage}>Upload Photo</button>
         </center>
       </h2>
     </div>
   );
 }
 
-let checkImage = (filename) => {
+let checkForModeration = async (filename) => {
+  let buffer = await filename.arrayBuffer();
   var params = {
     Image: {
-      S3Object: {
-        Bucket: bucket_name,
-        Name: `public/${filename}`,
-      },
+      Bytes: buffer,
     },
   };
 
@@ -56,9 +52,13 @@ let checkImage = (filename) => {
         return reject(new Error(err));
       }
       let modLabels = data.ModerationLabels;
-      if (modLabels.length >= 0) {
-        console.log("Inappropriate content");
-        alert("There is some inappropriate content in this image");
+      if (modLabels.length > 0) {
+        let error_msg =
+          "This image was not uploaded. There is some inappropriate content in this image according to AWS Rekognition: " +
+          JSON.stringify(modLabels);
+        return reject(error_msg);
+      } else {
+        return resolve(filename);
       }
     });
   });
