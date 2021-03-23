@@ -18,7 +18,7 @@ function App() {
   const [imageFile, setImageFile] = useState(null);
 
   const uploadImage = async () => {
-    checkForModeration(imageFile)
+    checkIfAcceptableImage(imageFile)
       .then((file) => Storage.put(file.name, file))
       .then(() => alert("Successfully uploaded image to S3!"))
       .catch((error) => alert(error));
@@ -38,8 +38,8 @@ function App() {
   );
 }
 
-let checkForModeration = async (filename) => {
-  let buffer = await filename.arrayBuffer();
+let checkIfAcceptableImage = async (imageFile) => {
+  let buffer = await imageFile.arrayBuffer();
   var params = {
     Image: {
       Bytes: buffer,
@@ -58,7 +58,7 @@ let checkForModeration = async (filename) => {
           JSON.stringify(modLabels);
         return reject(error_msg);
       } else {
-        return resolve(filename);
+        return resolve(imageFile);
       }
     });
   });
