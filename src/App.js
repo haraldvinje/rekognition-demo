@@ -17,7 +17,7 @@ const rekognition = new AWS.Rekognition();
 function App() {
   const [imageFile, setImageFile] = useState(null);
 
-  const uploadImage = async () => {
+  const uploadImage = () => {
     checkIfAcceptableImage(imageFile)
       .then((file) => Storage.put(file.name, file))
       .then(() => alert("Successfully uploaded image to S3!"))
@@ -53,10 +53,10 @@ let checkIfAcceptableImage = async (imageFile) => {
       }
       let modLabels = data.ModerationLabels;
       if (modLabels.length > 0) {
-        let error_msg =
+        let errorMsg =
           "This image was not uploaded. There is some inappropriate content in this image according to AWS Rekognition: " +
           JSON.stringify(modLabels);
-        return reject(error_msg);
+        return reject(errorMsg);
       } else {
         return resolve(imageFile);
       }
