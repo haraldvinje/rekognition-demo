@@ -38,9 +38,9 @@ function App() {
   );
 }
 
-let checkIfAcceptableImage = async (imageFile) => {
-  let buffer = await imageFile.arrayBuffer();
-  var params = {
+const checkIfAcceptableImage = async (imageFile) => {
+  const buffer = await imageFile.arrayBuffer();
+  const params = {
     Image: {
       Bytes: buffer,
     },
@@ -53,7 +53,7 @@ let checkIfAcceptableImage = async (imageFile) => {
       }
       let modLabels = data.ModerationLabels;
       if (modLabels.length > 0) {
-        let errorMsg =
+        const errorMsg =
           "This image was not uploaded. There is some inappropriate content in this image according to AWS Rekognition: " +
           JSON.stringify(modLabels);
         return reject(errorMsg);
