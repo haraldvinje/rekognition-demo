@@ -2,11 +2,11 @@
 
 This project is a demonstration of how you can easily use AWS Rekogntition for content moderation in your React Web App. In this example, the Web App is granted AWS access through [AWS Amplify](https://aws.amazon.com/amplify/getting-started/). The [AWS Rekogntition](https://aws.amazon.com/rekognition/) service is used through the [aws-sdk node package](https://www.npmjs.com/package/aws-sdk).
 
-## How to run
+## How to run locally
 
-You'll need an AWS profile and programmatic access to your account from your local machine to run this locally. To set up access to AWS amplify, follow [this](https://docs.amplify.aws/start/q/integration/react/) tutorial, but only add [ Storage ](https://docs.amplify.aws/lib/storage/getting-started/q/platform/js/#configure-your-application).
+You'll need an AWS profile and programmatic access to your account from your local machine to run this locally. Your user should have read and write access to S3, AWS Rekognition and AWS Amplify. To set up access to AWS amplify, follow [this](https://docs.amplify.aws/start/q/integration/react/) tutorial, but only add [ Storage ](https://docs.amplify.aws/lib/storage/getting-started/q/platform/js/#configure-your-application).
 
-You will need to run Node 14. Later versions seem to cause problems. Consider managing Node version using [NVM](https://github.com/nvm-sh/nvm).
+You will need to run Node 14. Later versions seem to cause problems. Consider managing Node versions using [NVM](https://github.com/nvm-sh/nvm).
 
 To start the app, run `npm install` and then `npm run start`.
 
