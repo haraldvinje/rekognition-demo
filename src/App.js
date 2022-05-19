@@ -51,7 +51,7 @@ const checkIfAcceptableImage = async (imageFile) => {
       if (err) {
         return reject(new Error(err));
       }
-      let modLabels = data.ModerationLabels;
+      const modLabels = data.ModerationLabels;
       if (modLabels.length > 0) {
         const errorMsg =
           "This image was not uploaded. There is some inappropriate content in this image according to AWS Rekognition: " +
